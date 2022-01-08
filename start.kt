@@ -1,5 +1,7 @@
 import ui.MainForm
 
-fun main(){
+fun main() {
     MainForm()
 }
+
+

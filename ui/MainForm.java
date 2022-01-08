@@ -1,15 +1,23 @@
 package ui;
 
+import busisness.ContactBusissness;
+import entity.ContactEntity;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class MainForm extends JFrame {
     private JPanel rootPainel;
     private JButton buttonNewContact;
     private JButton buttonRemove;
     private JTable tableContacts;
+    private JLabel labelConstactCount;
+
+    private ContactBusissness mContactBusissness;
 
     public MainForm() {
         setContentPane(rootPainel);
@@ -21,7 +29,10 @@ public class MainForm extends JFrame {
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        mContactBusissness = new ContactBusissness();
+
         setListeners();
+        loadContacts();
     }
 
     private void setListeners(){
@@ -37,7 +48,31 @@ public class MainForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+
+
+
             }
         });
+    }
+
+    private void loadContacts(){
+       List<ContactEntity> contactList =  mContactBusissness.getList();
+
+        String[] columNames = {"Nome", "Telefone"};
+
+        DefaultTableModel model = new DefaultTableModel(new Object[0][0], columNames);
+
+        for(ContactEntity i : contactList){
+            Object[] o = new Object[2];
+
+            o[0] =i.getName();
+            o[1] =i.getPhone();
+
+            model.addRow(o);
+        }
+
+        tableContacts.clearSelection();
+        tableContacts.setModel(model);
+        labelConstactCount.setText(mContactBusissness.getContactCountDescription());
     }
 }
